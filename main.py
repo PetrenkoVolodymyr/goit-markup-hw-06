@@ -14,9 +14,9 @@ class Name(Field):
 class Phone(Field):
     def check_phone(self, value):
         if len(value) == 10:
-            return (int(value))
+            return True
         else:
-            return None
+            raise ValueError("Not 10 digits") 
 
 
 class Record:
@@ -34,16 +34,20 @@ class Record:
                 if value==str(p):
                     self.phones.pop(self.phones.index(p))
 
-
     def edit_phone(self,old_num,new_num):
-        for item in self.phones:
-            if item.value == old_num:
-                item.value = new_num
+        # for item in self.phones:
+        #     if item.value == old_num:
+        #         item.value = new_num
+        if self.find_phone(old_num):
+            self.remove_phone(old_num)
+            self.add_phone(new_num)
+        else:
+            raise ValueError("Whong phone number")
 
     def find_phone(self, phone):
         for p in self.phones:
             if p.value == phone:
-                return p.value
+                return p
 
     def __str__(self):
         return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
@@ -55,7 +59,7 @@ class AddressBook(UserDict):
 
     
     def find(self, name):
-        return self.data[name]
+        return self.data.get(name)
 
 
     def delete(self, name):
@@ -85,7 +89,7 @@ for name, record in book.data.items():
 
 # # Знаходження та редагування телефону для John
 john = book.find("John")
-john.edit_phone("1234567890", "1112223333")
+john.edit_phone("1234567890", "111222333")
 
 print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555 
 
@@ -95,4 +99,3 @@ print(f"{john.name}: {found_phone}")  # Виведення: 5555555555
 
 # # Видалення запису Jane
 book.delete("Jane") 
-
