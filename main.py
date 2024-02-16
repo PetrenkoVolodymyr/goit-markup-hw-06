@@ -12,7 +12,7 @@ class Name(Field):
 		pass
 
 class Phone(Field):
-    def settt(self, value):
+    def check_phone(self, value):
         if len(value) == 10:
             return (int(value))
         else:
@@ -26,8 +26,14 @@ class Record:
 
     def add_phone(self, value):
         number=Phone(value) 
-        if number.settt(value):
+        if number.check_phone(value):
             self.phones.append(number)
+
+    def remove_phone(self, value):
+            for p in self.phones:
+                if value==str(p):
+                    self.phones.pop(self.phones.index(p))
+
 
     def edit_phone(self,old_num,new_num):
         for item in self.phones:
@@ -81,11 +87,12 @@ for name, record in book.data.items():
 john = book.find("John")
 john.edit_phone("1234567890", "1112223333")
 
-print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555
+print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555 
 
 # # Пошук конкретного телефону у записі John
 found_phone = john.find_phone("5555555555")
-print(f"{john.name}: {found_phone}")  # Виведення: 5555555555
+print(f"{john.name}: {found_phone}")  # Виведення: 5555555555 
 
 # # Видалення запису Jane
-book.delete("Jane")
+book.delete("Jane") 
+
