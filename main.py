@@ -13,7 +13,7 @@ class Name(Field):
 
 class Phone(Field):
     def check_phone(self, value):
-        if len(value) == 10:
+        if len(value) == 10 and value.isdigit():
             return True
         else:
             raise ValueError("Not 10 digits") 
@@ -35,9 +35,6 @@ class Record:
                     self.phones.pop(self.phones.index(p))
 
     def edit_phone(self,old_num,new_num):
-        # for item in self.phones:
-        #     if item.value == old_num:
-        #         item.value = new_num
         if self.find_phone(old_num):
             self.remove_phone(old_num)
             self.add_phone(new_num)
@@ -63,8 +60,11 @@ class AddressBook(UserDict):
 
 
     def delete(self, name):
-        del self.data[name]
-        pass
+        try:
+            del self.data[name]
+        except:
+            print(f'No name {name}')
+
 
 
 # Створення нової адресної книги
@@ -89,7 +89,7 @@ for name, record in book.data.items():
 
 # # Знаходження та редагування телефону для John
 john = book.find("John")
-john.edit_phone("1234567890", "111222333")
+john.edit_phone("1234567890", "1112223333")
 
 print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555 
 
