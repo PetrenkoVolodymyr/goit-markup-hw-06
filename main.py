@@ -12,12 +12,14 @@ class Name(Field):
 		pass
 
 class Phone(Field):
-    def check_phone(self, value):
-        if len(value) == 10 and value.isdigit():
-            return True
-        else:
-            raise ValueError("Not 10 digits") 
 
+    def __init__(self, value):
+        if not self.check_phone(value):
+            raise ValueError("Not 10 digits") 
+        super().__init__(value)
+
+    def check_phone(self, value):
+        return len(value) == 10 and value.isdigit()
 
 class Record:
     def __init__(self, name):
